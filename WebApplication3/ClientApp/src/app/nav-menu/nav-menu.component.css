@@ -1,3 +1,41 @@
+nav.navbar {
+  height: 9em;
+  background-color: #d4b47a;
+  color: white;
+}
+
+nav .container * {color: white;}
+
+.navbar-light .navbar-brand {
+  color: white;
+}
+
+.acesse-sua-conta {
+  font-size: smaller;
+  padding: 0;
+  top: -18px;
+  position: relative;
+  left: -10%;
+}
+
+ 
+input#btn-acessar {
+  color: black;
+  margin-top: 4px;
+  position: relative;
+  top: -18px;
+  border-width: 0px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+
+ul.navbar-nav.flex-grow.w-100 {
+  padding-top: 15px;
+}
+
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;

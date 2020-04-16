@@ -1,14 +1,70 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+
+<form class="text-center" (ngSubmit)="realizarCadastro()" [formGroup]="cadastroForm">
+  <h4>Você está a um passo de criar sua conta Training Banking</h4>
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Nome</label>
+    <input type="text" class="form-control" id="Nome" formControlName="Nome" placeholder="Nome"
+           [ngClass]="{'is-invalid':cadastroForm.get('Nome').errors && (cadastroForm.get('Nome').dirty || cadastroForm.get('Nome').touched)}" />
+    <span *ngIf="cadastroForm.get('Nome').errors && (cadastroForm.get('Nome').dirty || cadastroForm.get('Nome').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Nome')?.errors?.minlength || cadastroForm.get('Nome')?.errors?.maxlength )">Deve conter entre 5 e 50 caracteres</p>
+      <p *ngIf="(cadastroForm.get('Nome')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Cpf</label>
+    <input type="text" class="form-control" id="Cpf" formControlName="Cpf"
+           cpf [textMask]="{mask:MASKS.cpf.textMask}"
+           placeholder="CPF"
+           [ngClass]="{'is-invalid':cadastroForm.get('Cpf').errors && (cadastroForm.get('Cpf').dirty || cadastroForm.get('Cpf').touched)}" />
+    <span *ngIf="cadastroForm.get('Cpf').errors && (cadastroForm.get('Cpf').dirty || cadastroForm.get('Cpf').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Cpf')?.errors?.cpf )">CPF digitado é inválido</p>
+      <p *ngIf="(cadastroForm.get('Cpf')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputGroupUsername">E-mail</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">@</div>
+      </div>
+      <input type="email" class="form-control" id="Email" formControlName="Email" placeholder="E-mail"
+             [ngClass]="{'is-invalid':cadastroForm.get('Email').errors && (cadastroForm.get('Email').dirty || cadastroForm.get('Email').touched)}" />
+    </div>
+      <span *ngIf="cadastroForm.get('Email').errors && (cadastroForm.get('Email').dirty || cadastroForm.get('Email').touched)" class="text-danger">
+        <p *ngIf="(cadastroForm.get('Email')?.errors?.email )">Email informado é inválido</p>
+        <p *ngIf="(cadastroForm.get('Email')?.errors?.required)">Preenchimento obrigatório</p>
+      </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Telefone</label>
+    <input type="text" class="form-control" id="Telefone" formControlName="Telefone" placeholder="Telefone"
+           telefone [textMask]="{mask: MASKS.telefone.textMask}"
+           [ngClass]="{'is-invalid':cadastroForm.get('Telefone').errors && (cadastroForm.get('Telefone').dirty || cadastroForm.get('Telefone').touched)}" />
+    <span *ngIf="cadastroForm.get('Telefone').errors && (cadastroForm.get('Telefone').dirty || cadastroForm.get('Telefone').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Telefone')?.errors?.telefone )">Telefone informado é inválido</p>
+      <p *ngIf="(cadastroForm.get('Telefone')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Endereco</label>
+    <input type="text" class="form-control" id="Endereco" formControlName="Endereco" placeholder="Endereço">
+  </div>
+
+  <div class="form-group">
+    <button type="submit"  [ngClass]="{'bg-secondary':!cadastroForm.valid}"  [disabled]="!cadastroForm.valid" class="btn w-25">Cadastrar</button>
+  </div>
+
+  <div style="display: none" class="form-group">
+    <div class="col-md-4">
+      <p>Form valido : {{cadastroForm.valid}}</p>
+      <p>Form sujo : {{cadastroForm.dirty}}</p>
+      <p>Form tocado  : {{cadastroForm.touched}}</p>
+    </div>
+  </div>
+</form>
+
+
+

@@ -29,8 +29,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\extencoes.ts" />
+    <None Remove="ClientApp\src\app\models\Cliente.ts" />
+    <None Remove="ClientApp\src\services\base.service.ts" />
+    <None Remove="ClientApp\src\services\cliente.services.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\App.Bank.Business\App.Bank.Business.csproj" />
     <ProjectReference Include="..\App.Bank.Data\App.Bank.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\home\home.extencoes.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\Cliente.ts" />
+    <TypeScriptCompile Include="ClientApp\src\services\base.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\services\cliente.services.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
