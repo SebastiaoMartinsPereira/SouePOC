@@ -29,7 +29,7 @@ namespace App.Bank.Data.Migrations
 
                     b.Property<string>("Documento")
                         .IsRequired()
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("Email")
                         .IsRequired()

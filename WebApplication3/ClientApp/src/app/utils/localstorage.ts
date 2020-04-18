@@ -1,20 +1,22 @@
 export class LocalStorageUtils {
 
   public obterCliente() {
-    return JSON.parse(localStorage.getItem('cadastro'));
+    if(localStorage.getItem('cadastro.cliente') === "undefined") return null;
+    return JSON.parse(localStorage.getItem('cadastro.cliente'));
   }
 
   public salvarDadosLocaisCliente(response: any) {
     this.salvarTokenCliente(response.accessToken);
-    this.salvarCliente(response.userToken);
+    this.salvarCliente(response.cliente);
   }
 
   public limparDadosLocaisCliente() {
     localStorage.removeItem('cadastro.token');
-    localStorage.removeItem('cadastro.user');
+    localStorage.removeItem('cadastro.cliente');
   }
 
   public obterTokenCliente(): string {
+    if (localStorage.getItem('cadastro.token') === "undefined") return null;
     return localStorage.getItem('cadastro.token');
   }
 
@@ -22,8 +24,8 @@ export class LocalStorageUtils {
     localStorage.setItem('cadastro.token', token);
   }
 
-  public salvarCliente(user: string) {
-    localStorage.setItem('cadastro.user', JSON.stringify(user));
+  public salvarCliente(cliente: string) {
+    localStorage.setItem('cadastro.cliente', JSON.stringify(cliente));
   }
 
 }

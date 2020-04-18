@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Bank.Data.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20200416131515_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20200417140354_InitalMigrations")]
+    partial class InitalMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace App.Bank.Data.Migrations
 
                     b.Property<string>("Documento")
                         .IsRequired()
-                        .HasColumnType("varchar(14)");
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("Email")
                         .IsRequired()

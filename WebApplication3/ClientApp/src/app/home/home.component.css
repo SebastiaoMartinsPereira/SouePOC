@@ -1,31 +1,38 @@
 
-form {
-  margin: 5em 10em 10em 10em;
+.container {
+  left: 0;
+  right: 0;
 }
 
-  form h4 {
-    margin-bottom: 3em;
+div {
+  width: 100%;
+  height: 83%;
+  position: absolute;
+  left: 0;
+}
+
+
+  div#home::after {
+    content: "";
+    background: url('../../assets/bg_1.jpg');
+    opacity: 0.5;
+    top: -17px;
+    left: -84px;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-repeat: no-repeat;
+    z-index: -1;
+    background-origin: content-box;
+    background-size: cover;
   }
 
-button.btn {
-  background-color: #d4b47a;
-  color: black;
-  font-weight: bold;
+.fadeInUp {
+  padding-top: 135px;
+  margin-top: 10%;
 }
 
-form input {
-  border-top-width: 0;
-}
-
-input[formControlName] {
-  border-top-width: 0px;
-  border-left-width: 0px;
-  border-right-width: 0px;
-  border-radius: 0;
-  outline: #d4b47a;
-  border-color: #d4b47a;
-}
-
-.btn:disabled {
-  cursor: no-drop;
+.home-logado h3 {
+  padding-top: 2em;
+  font-weight: 800; 
 }

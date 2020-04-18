@@ -7,21 +7,15 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex " [ngClass]='{"show": isExpanded}'>
-        <ul class="navbar-nav flex-grow w-100">
+        <ul class="navbar-nav w-100">
           <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-            <a class="nav-link " [routerLink]='["/"]'>Investimentos</a>
+            <a class="nav-link " [routerLink]='["/cadastro"]'>Cadastro</a>
           </li>
           <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link " [routerLink]='["/counter"]'>Planos</a>
-          </li>
-          <li class="nav-item col text-right" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link acesse-sua-conta" [routerLink]='["/counter"]'><b>Acesse</b> sua conta</a>
-            <input type="text" id="btn-acessar" placeholder="Digite seu CPF" />
-          </li>
-          <li>
-            <button class="btn btn-light text-dark">Acessar</button>
+            <a class="nav-link " [routerLink]='["/planos"]'>Planos</a>
           </li>
         </ul>
+        <app-menu-login></app-menu-login>
       </div>
     </div>
   </nav>

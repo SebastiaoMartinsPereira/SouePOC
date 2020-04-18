@@ -1,30 +1,32 @@
-﻿using App.Bank.Business.Models;
+﻿using App.Bank.Business.Interfaces;
+using App.Bank.Business.Models;
 using App.Bank.Data.Context;
+using App.Bank.UI._AppData;
+using App.Bank.UI.ViewModels;
+using DevIO.App.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace App.Bank.UI.Controllers
 {
+    [Authorize("Bearer")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientesController : ControllerBase
+    public class ClientesController : BaseController
     {
+        private readonly IClienteService _clienteService;
         private readonly MainContext _context;
 
-        public ClientesController(MainContext context)
+        public ClientesController(IClienteService clienteService, MainContext context, INotificador notificador) : base(notificador)
         {
-            _context = context;
-        }
-
-        // GET: api/Clientes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
-        {
-            return await _context.Clientes.ToListAsync();
+            this._clienteService = clienteService;
+            this._context = context;
         }
 
         // GET: api/Clientes/5
@@ -41,65 +43,82 @@ namespace App.Bank.UI.Controllers
             return cliente;
         }
 
-        // PUT: api/Clientes/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(Guid id, Cliente cliente)
+        // GET: api/Clientes/08343270401
+        [AllowAnonymous]
+        [HttpGet("cpf/{cpf}")]
+        [Produces("application/json")]
+        public async Task<ActionResult<object>> GetCliente(string cpf,
+            [FromServices]SigningConfigurations signingConfigurations,
+            [FromServices]TokenConfigurations tokenConfigurations)
         {
-            if (id != cliente.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(cliente).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Clientes
-        [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
-        {
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
-        }
-
-        // DELETE: api/Clientes/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Cliente>> DeleteCliente(Guid id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _clienteService.BuscarPorDocumento(cpf);
             if (cliente == null)
             {
-                return NotFound();
+                return NotFound(this.Notificacoes());
             }
 
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-
-            return cliente;
+            return CreateToken(signingConfigurations, tokenConfigurations, cliente);
         }
 
-        private bool ClienteExists(Guid id)
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> PostCliente(Cliente cliente,
+            [FromServices]SigningConfigurations signingConfigurations,
+            [FromServices]TokenConfigurations tokenConfigurations)
         {
-            return _context.Clientes.Any(e => e.Id == id);
+            if (!ModelState.IsValid) return BadRequest(cliente);
+
+            await _clienteService.Adicionar(cliente);
+
+            if (!OperacaoValida()) return this.BadRequest();
+
+            return CreateToken(signingConfigurations, tokenConfigurations, cliente);
+            
         }
+
+        private ActionResult<object> CreateToken(SigningConfigurations signingConfigurations,
+            TokenConfigurations tokenConfigurations, Cliente cliente)
+        {
+            ClaimsIdentity identity = new ClaimsIdentity(
+                new GenericIdentity(cliente.Id.ToString(), "Login"),
+                new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, cliente.Id.ToString())
+                }
+            );
+
+            DateTime dataCriacao = DateTime.Now;
+            DateTime dataExpiracao = dataCriacao.AddSeconds(tokenConfigurations.Seconds);
+
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = tokenConfigurations.Issuer,
+                Audience = tokenConfigurations.Audience,
+                SigningCredentials = signingConfigurations.SigningCredentials,
+                Subject = identity,
+                NotBefore = dataCriacao,
+                Expires = dataExpiracao
+            });
+            var token = handler.WriteToken(securityToken);
+
+            return new OkObjectResult(new
+            {
+                data = new
+                {
+                    authenticated = true,
+                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = token,
+                    message = "OK",
+                    cliente
+
+                }
+            });
+
+        }
+
     }
 }

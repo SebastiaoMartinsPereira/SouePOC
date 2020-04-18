@@ -12,7 +12,7 @@ namespace App.Bank.Business.Models
 
         public Entity()
         {
-            this.Id = new Guid();
+            this.Id = Guid.NewGuid();
         }
     }
 }

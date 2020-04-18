@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace App.Bank.Data.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class InitalMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,11 +13,11 @@ namespace App.Bank.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Nome = table.Column<string>(type: "varchar(250)", nullable: false),
-                    Documento = table.Column<string>(type: "varchar(14)", nullable: false),
                     Email = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Telefone = table.Column<string>(type: "varchar(11)", nullable: false),
                     Endereco = table.Column<string>(type: "varchar(250)", nullable: false),
-                    DataCadastro = table.Column<DateTime>(nullable: false)
+                    DataCadastro = table.Column<DateTime>(nullable: false),
+                    Documento = table.Column<string>(type: "varchar(11)", nullable: false),
+                    Telefone = table.Column<string>(type: "varchar(11)", nullable: false)
                 },
                 constraints: table =>
                 {

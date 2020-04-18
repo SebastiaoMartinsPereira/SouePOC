@@ -1,0 +1,39 @@
+
+form {
+  margin: 5em 10em 10em 10em;
+}
+
+  form h4 {
+    margin-bottom: 3em;
+  }
+
+button.btn {
+  background-color: #d4b47a;
+  color: black;
+  font-weight: bold;
+}
+
+form input {
+  border-top-width: 0;
+}
+
+input[formControlName] {
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-radius: 0;
+  outline: #d4b47a;
+  border-color: #d4b47a;
+}
+
+.btn:disabled {
+  cursor: no-drop;
+}
+
+#cadastro-success {
+  margin-top: 20%;
+}
+
+.sumido {
+  display: none;
+}

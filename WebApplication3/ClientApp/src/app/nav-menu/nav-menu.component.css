@@ -19,7 +19,7 @@ nav .container * {color: white;}
 }
 
  
-input#btn-acessar {
+input#txt-cpf {
   color: black;
   margin-top: 4px;
   position: relative;
@@ -53,4 +53,9 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.cliente-logado {
+
+  width: 20em;
 }

@@ -1,6 +1,7 @@
 ﻿using App.Bank.Business.Interfaces;
 using App.Bank.Business.Models;
-using System;
+using App.Bank.Business.Models.Validations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Bank.Business.Services
@@ -16,22 +17,29 @@ namespace App.Bank.Business.Services
 
         public async Task Adicionar(Cliente cliente)
         {
-            //if (!ExecutarValidacao(new ClienteValidation(), produto)) return;
+            if (!ExecutarValidacao(new ClienteValidation(), cliente)) return;
+
+            if (_clienteRepository.Buscar(f => f.Documento == cliente.Documento).Result.Any())
+            {
+                Notificar($"Já existe um {cliente.GetType().Name} cadastrado para este documento.");
+                return;
+            }
 
             await _clienteRepository.Adicionar(cliente);
         }
 
-        public async Task Atualizar(Cliente cliente)
+        public async Task<Cliente> BuscarPorDocumento(string documento)
         {
-            //if (!ExecutarValidacao(new ProdutoValidation(), produto)) return;
+            var cliente = (await _clienteRepository.Buscar(c => c.Documento.Equals(documento.OnlyNumbers()))).FirstOrDefault();
 
-            await _clienteRepository.Atualizar(cliente);
+            if (!(cliente is null)) return cliente;
+
+            Notificar($"Cliente com CPF:{documento} não possui cadastro no sistema.");
+            return null;
+
         }
 
-        public async Task Remover(Guid id)
-        {
-            await _clienteRepository.Remover(id);
-        }
+
 
         public void Dispose()
         {

@@ -1,0 +1,17 @@
+<form (ngSubmit)="acessar()" [formGroup]="loginForm">
+  <ul [ngSwitch]="usuarioLogado()" class="navbar-nav w-100">
+    <li *ngSwitchCase="false" class="nav-item col text-right" [routerLinkActive]='["link-active"]'>
+      <a class="nav-link acesse-sua-conta"><b>Acesse</b> sua conta</a>
+      <input type="text" id="txt-cpf" formControlName="Cpf" cpf [textMask]="{mask:MASKS.cpf.textMask}" placeholder="Digite seu CPF" />
+    </li>
+    <li *ngSwitchCase="false">
+      <button type="submit" class="btn btn-light text-dark">Acessar</button>
+    </li>
+    <li *ngSwitchCase="true" class="nav-item col text-right cliente-logado text-dark" [routerLinkActive]='["link-active"]'>
+      <label>Olá,</label> &nbsp;<small>{{ nome}}</small>
+    </li>
+    <li *ngSwitchCase="true">
+      <a href="javascript:void(0)" (click)="logout()" type="submit" class="text-dark"> Sair <i class="fas fa-sign-out-alt"></i></a>
+    </li>
+  </ul>
+</form>

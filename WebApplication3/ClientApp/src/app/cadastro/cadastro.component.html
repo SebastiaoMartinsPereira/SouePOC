@@ -1,0 +1,88 @@
+
+<form id="formCadastro" class="text-center" (ngSubmit)="realizarCadastro()" [formGroup]="cadastroForm">
+
+  <div class="alert alert-danger" *ngIf="errors.length > 0">
+
+    <h3 id="msgRetorno">Ocorreram problemas durante a solicitação!</h3>
+    <ul>
+      <li *ngFor="let error of errors">{{error.mensagem}}</li>
+    </ul>
+
+  </div>
+
+  <h4>Você está a um passo de criar sua conta Training Banking</h4>
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Nome</label>
+    <input type="text" class="form-control" id="Nome" formControlName="Nome" placeholder="Nome"
+           [ngClass]="{'is-invalid':cadastroForm.get('Nome').errors && (cadastroForm.get('Nome').dirty || cadastroForm.get('Nome').touched)}" />
+    <span *ngIf="cadastroForm.get('Nome').errors && (cadastroForm.get('Nome').dirty || cadastroForm.get('Nome').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Nome')?.errors?.minlength || cadastroForm.get('Nome')?.errors?.maxlength )">Deve conter entre 5 e 50 caracteres</p>
+      <p *ngIf="(cadastroForm.get('Nome')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Cpf</label>
+    <input type="text" class="form-control" id="Documento" formControlName="Documento"
+           cpf [textMask]="{mask:MASKS.cpf.textMask}"
+           placeholder="CPF"
+           [ngClass]="{'is-invalid':cadastroForm.get('Documento').errors && (cadastroForm.get('Documento').dirty || cadastroForm.get('Documento').touched)}" />
+    <span *ngIf="cadastroForm.get('Documento').errors && (cadastroForm.get('Documento').dirty || cadastroForm.get('Documento').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Documento')?.errors?.cpf )">CPF digitado é inválido</p>
+      <p *ngIf="(cadastroForm.get('Documento')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputGroupUsername">E-mail</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">@</div>
+      </div>
+      <input type="email" class="form-control" id="Email" formControlName="Email" placeholder="E-mail"
+             [ngClass]="{'is-invalid':cadastroForm.get('Email').errors && (cadastroForm.get('Email').dirty || cadastroForm.get('Email').touched)}" />
+    </div>
+    <span *ngIf="cadastroForm.get('Email').errors && (cadastroForm.get('Email').dirty || cadastroForm.get('Email').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Email')?.errors?.email )">Email informado é inválido</p>
+      <p *ngIf="(cadastroForm.get('Email')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Telefone</label>
+    <input type="text" class="form-control" id="Telefone" formControlName="Telefone" placeholder="Telefone"
+           telefone [textMask]="{mask: MASKS.telefone.textMask}"
+           [ngClass]="{'is-invalid':cadastroForm.get('Telefone').errors && (cadastroForm.get('Telefone').dirty || cadastroForm.get('Telefone').touched)}" />
+    <span *ngIf="cadastroForm.get('Telefone').errors && (cadastroForm.get('Telefone').dirty || cadastroForm.get('Telefone').touched)" class="text-danger">
+      <p *ngIf="(cadastroForm.get('Telefone')?.errors?.telefone )">Telefone informado é inválido</p>
+      <p *ngIf="(cadastroForm.get('Telefone')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Endereco</label>
+    <input type="text" class="form-control" id="Endereco" formControlName="Endereco" placeholder="Endereço">
+  </div>
+
+  <div class="form-group">
+    <button type="submit" [ngClass]="{'bg-secondary':!cadastroForm.valid}" [disabled]="!cadastroForm.valid" class="btn w-25">Cadastrar</button>
+  </div>
+
+  <div style="display: none" class="form-group">
+    <div class="col-md-4">
+      <p>Form valido : {{cadastroForm.valid}}</p>
+      <p>Form sujo : {{cadastroForm.dirty}}</p>
+      <p>Form tocado : {{cadastroForm.touched}}</p>
+    </div>
+  </div>
+</form>
+
+<div id="cadastro-success" class="card alert-success sumido">
+  <div class="card-body">
+    <h3 class="card-title">Parabéns</h3>
+    <h5 class="card-text">Cadastro concluído com sucesso!</h5>
+    <p>Ficamos felizes em tê-lo como um cliente Training Banking, <b>{{cliente.Nome}}</b>!</p>
+    <h3>Você está logado!</h3>
+    <span>Você será redirecionado para a home em 10 segundos!</span><br/><br />
+    <input type="button" (click)="irHome()" class="btn btn-secondary" value="Ir para a home"/>
+  </div>
+</div>

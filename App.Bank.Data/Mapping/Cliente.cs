@@ -12,7 +12,7 @@ namespace App.Bank.Data.Mapping
             builder.HasKey(c => c.Id);
             builder.Property(c => c.Documento)
                 .IsRequired()
-                .HasColumnType("varchar(14)");
+                .HasColumnType("varchar(11)");
 
             builder.Property(c => c.Nome)
                 .IsRequired()
