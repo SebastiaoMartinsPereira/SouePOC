@@ -27,6 +27,7 @@ namespace App.Bank.UI.Controllers
         {
             this._clienteService = clienteService;
             this._context = context;
+
         }
 
         // GET: api/Clientes/5
@@ -91,6 +92,20 @@ namespace App.Bank.UI.Controllers
 
             return CreateToken(signingConfigurations, tokenConfigurations, cliente);
         }
+
+
+        [HttpDelete]
+        [AllowAnonymous]
+        [Route("delete/{id}")]
+        public async Task<ActionResult<object>> DeleteCliente(Guid id)
+        {
+            var clienteDeletado = await _clienteService.Delete(id);
+            if (!OperacaoValida()) return this.BadRequest();
+
+            return clienteDeletado;
+        }
+
+
 
 
 

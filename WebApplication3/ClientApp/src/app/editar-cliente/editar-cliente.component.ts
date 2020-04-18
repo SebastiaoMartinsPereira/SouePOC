@@ -21,7 +21,7 @@ export class EditarClienteComponent implements OnInit {
   edicaoForm: FormGroup;
   cliente: Cliente = new Cliente();
   MASKS = utilsBr.MASKS;
-  redTimeOut : any;
+  redTimeOut: any;
 
   constructor(
     private fb: FormBuilder,
@@ -30,9 +30,6 @@ export class EditarClienteComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    
-
 
     this.route.params
       .subscribe(params => {
@@ -53,7 +50,7 @@ export class EditarClienteComponent implements OnInit {
   }
 
   public getCliente(id: string) {
-    
+
     if (this.cliente.Id !== undefined) {
       this.clienteService.getCliente(this.cliente.Id)
         .subscribe(
@@ -64,10 +61,10 @@ export class EditarClienteComponent implements OnInit {
   }
 
   carregarForm(response: any) {
-    debugger;
+ 
     this.edicaoForm.patchValue({
       "Nome": response.nome,
-      "Email": response.email, 
+      "Email": response.email,
       "Documento": response.documento,
       "Telefone": response.telefone,
       "Endereco": response.endereco,
@@ -101,6 +98,28 @@ export class EditarClienteComponent implements OnInit {
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
   }
+
+  excluir() {
+    debugger;
+    this.cliente = Object.assign({}, this.cliente, this.edicaoForm.value);
+    this.clienteService.excluirCliente(this.cliente.Id)
+      .subscribe(
+        sucesso => { this.excluirSucesso(sucesso) },
+        falha => { this.processarFalha(falha) }
+      );
+  }
+
+
+  excluirSucesso(response: any) {
+    debugger;
+    this.edicaoForm.reset();
+    this.errors = [];
+    this.clienteService.LocalStorage.salvarDadosLocaisCliente(response);
+    document.querySelector('#formEditar').classList.toggle('sumido');
+    document.querySelector('#excluir-success').classList.toggle('sumido');
+    this.irHome(true);
+  }
+
 
   irHome(esperar: boolean) {
 

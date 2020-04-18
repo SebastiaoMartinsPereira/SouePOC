@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Cliente } from "../app/models/Cliente";
 import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -25,6 +25,22 @@ export class ClienteService extends BaseService {
   getCliente(id: string): Observable<string> {
     let response = this.http
       .get(this.urlService + `Clientes/${id}`)
+      .pipe(
+        map(this.extractData),
+        catchError(this.serviceError));
+
+    return response;
+  }
+
+  excluirCliente(id: string): Observable<string> {
+
+    debugger;
+    var t = this.LocalStorage.obterTokenCliente();
+    var headers_object = this.obterHeaderJson();
+    headers_object.headers.append("Authorization", "Bearer " + t);
+
+    let response = this.http
+      .delete(this.urlService + `Clientes/delete/${id}`, headers_object)
       .pipe(
         map(this.extractData),
         catchError(this.serviceError));
@@ -60,7 +76,7 @@ export class ClienteService extends BaseService {
   }
 
 
-   
+
 
 
 }

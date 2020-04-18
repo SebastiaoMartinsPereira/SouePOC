@@ -66,8 +66,10 @@
   </div>
 
   <div class="form-group">
-    <!--<input type="button" (click)="excluir()" [disabled]="!edicaoForm.valid" class="btn w-25" value="Excluir" />-->
-    <button type="submit" [ngClass]="{'bg-danger':edicaoForm.valid}" [ngClass]="{'bg-danger':!edicaoForm.valid}" [disabled]="!edicaoForm.valid" class="btn w-25">Salvar</button>
+
+    <a id="btn-excluir" (click)="excluir()" type="submit" href="javascript:void(0)" class="btn btn-outline-danger text-danger">Excluir  <i class="fas fa-trash-alt fa-fw"></i></a>
+    <button type="submit" [ngClass]="{'btn-alert':edicaoForm.valid}" [ngClass]="{'bg-danger':!edicaoForm.valid}" [disabled]="!edicaoForm.valid" class="btn w-25">Salvar</button>
+
   </div>
 
   <div style="display: none" class="form-group">
@@ -86,3 +88,14 @@
     <input type="button" (click)="irHome()" class="btn btn-secondary" value="Ir para a home" />
   </div>
 </div>
+
+
+<div id="excluir-success" class="card alert-danger sumido">
+  <div class="card-body">
+    <h5 class="card-text">Seus dados foram apagados com sucesso!</h5>
+    <span>Você será redirecionado para a home em 10 segundos!</span><br /><br />
+    <input type="button" (click)="irHome()" class="btn btn-secondary" value="Ir para a home" />
+  </div>
+</div>
+
+

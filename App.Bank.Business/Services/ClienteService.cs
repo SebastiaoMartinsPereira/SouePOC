@@ -1,6 +1,7 @@
 ﻿using App.Bank.Business.Interfaces;
 using App.Bank.Business.Models;
 using App.Bank.Business.Models.Validations;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,12 +50,28 @@ namespace App.Bank.Business.Services
             clienteAtual.Documento = cliente.Documento;
             clienteAtual.Email = cliente.Email;
             clienteAtual.Nome = cliente.Nome;
-            clienteAtual.Endereco= cliente.Endereco;
+            clienteAtual.Endereco = cliente.Endereco;
             clienteAtual.Telefone = cliente.Telefone;
 
             await _clienteRepository.Atualizar(clienteAtual);
         }
 
+        public async Task<Cliente> Delete(Guid id)
+        {
+
+            var clienteAtual = await _clienteRepository.ObterPorId(id);
+
+            if (clienteAtual == null)
+            {
+                Notificar($"Cliente não identificado no sistema.");
+                return null;
+            }
+
+            await _clienteRepository.Remover(id);
+
+            return clienteAtual;
+
+        }
 
 
         public async Task<Cliente> BuscarPorDocumento(string documento)

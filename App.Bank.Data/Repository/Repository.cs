@@ -1,12 +1,12 @@
 ﻿using App.Bank.Business.Interfaces;
 using App.Bank.Business.Models;
+using App.Bank.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using App.Bank.Data.Context;
 
 namespace App.Bank.Data.Repository
 {
@@ -51,9 +51,17 @@ namespace App.Bank.Data.Repository
 
         public async Task Remover(Guid id)
         {
-            var model = new TEntity { Id = id };
-            DbSet.Remove(model);
-            await SaveChanges();
+            try
+            {
+                DetachLocal(_ => _.Id.Equals(id));
+                DbSet.Remove(new TEntity { Id = id }).State = EntityState.Deleted;
+                await SaveChanges();
+            }
+            catch (Exception d)
+            {
+
+                throw;
+            }
         }
 
         public async Task<int> SaveChanges()
@@ -64,6 +72,15 @@ namespace App.Bank.Data.Repository
         public void Dispose()
         {
             Db?.Dispose();
+        }
+
+        public virtual void DetachLocal(Func<TEntity, bool> predicate)
+        {
+            var local = DbSet.Local.Where(predicate).FirstOrDefault();
+            if (!(local is null))
+            {
+                Db.Entry(local).State = EntityState.Detached;
+            }
         }
 
     }

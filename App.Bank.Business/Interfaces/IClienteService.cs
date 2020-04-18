@@ -8,6 +8,7 @@ namespace App.Bank.Business.Interfaces
     {
         Task Adicionar(Cliente model);
         Task Editar(Cliente model);
+        Task <Cliente> Delete(Guid id);
         Task<Cliente> BuscarPorDocumento(string documento);
     }
 }
