@@ -28,6 +28,35 @@ namespace App.Bank.Business.Services
             await _clienteRepository.Adicionar(cliente);
         }
 
+        public async Task Editar(Cliente cliente)
+        {
+            if (!ExecutarValidacao(new ClienteValidation(), cliente)) return;
+
+            var clienteAtual = await _clienteRepository.ObterPorId(cliente.Id);
+
+            if (clienteAtual == null)
+            {
+                Notificar($"Cliente não identificado no sistema.");
+                return;
+            }
+
+            if (_clienteRepository.Buscar(f => f.Documento == cliente.Documento && f.Id != cliente.Id).Result.Any())
+            {
+                Notificar($"Já existe um {cliente.GetType().Name} cadastrado para este documento.");
+                return;
+            }
+
+            clienteAtual.Documento = cliente.Documento;
+            clienteAtual.Email = cliente.Email;
+            clienteAtual.Nome = cliente.Nome;
+            clienteAtual.Endereco= cliente.Endereco;
+            clienteAtual.Telefone = cliente.Telefone;
+
+            await _clienteRepository.Atualizar(clienteAtual);
+        }
+
+
+
         public async Task<Cliente> BuscarPorDocumento(string documento)
         {
             var cliente = (await _clienteRepository.Buscar(c => c.Documento.Equals(documento.OnlyNumbers()))).FirstOrDefault();
@@ -45,5 +74,7 @@ namespace App.Bank.Business.Services
         {
             _clienteRepository?.Dispose();
         }
+
+
     }
 }

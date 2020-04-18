@@ -30,6 +30,7 @@ namespace App.Bank.UI.Controllers
         }
 
         // GET: api/Clientes/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(Guid id)
         {
@@ -74,8 +75,24 @@ namespace App.Bank.UI.Controllers
             if (!OperacaoValida()) return this.BadRequest();
 
             return CreateToken(signingConfigurations, tokenConfigurations, cliente);
-            
+
         }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> PutCliente(Cliente cliente,
+            [FromServices]SigningConfigurations signingConfigurations,
+            [FromServices]TokenConfigurations tokenConfigurations)
+        {
+            if (!ModelState.IsValid) return BadRequest(cliente);
+
+            await _clienteService.Editar(cliente);
+            if (!OperacaoValida()) return this.BadRequest();
+
+            return CreateToken(signingConfigurations, tokenConfigurations, cliente);
+        }
+
+
 
         private ActionResult<object> CreateToken(SigningConfigurations signingConfigurations,
             TokenConfigurations tokenConfigurations, Cliente cliente)

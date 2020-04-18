@@ -7,6 +7,7 @@ namespace App.Bank.Business.Interfaces
     public interface IClienteService : IDisposable
     {
         Task Adicionar(Cliente model);
+        Task Editar(Cliente model);
         Task<Cliente> BuscarPorDocumento(string documento);
     }
 }

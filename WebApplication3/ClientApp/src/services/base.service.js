@@ -15,7 +15,7 @@ var BaseService = /** @class */ (function () {
         };
     };
     BaseService.prototype.extractData = function (response) {
-        return response.data || {};
+        return response.data || response || {};
     };
     BaseService.prototype.serviceError = function (response) {
         if (response instanceof http_1.HttpErrorResponse) {

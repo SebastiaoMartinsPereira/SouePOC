@@ -15,6 +15,7 @@ import { PlanosComponent } from './planos/planos.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { MenuLoginComponent } from './menu-login/menu-login.component';
 import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
+import { EditarClienteComponent } from "./editar-cliente/editar-cliente.component";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
     CadastroComponent,
     MenuLoginComponent,
     AcessoNegadoComponent,
+    EditarClienteComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,6 +43,7 @@ import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
       { path: 'cadastro', component: CadastroComponent },
       { path: 'planos', component: PlanosComponent },
       { path: 'acesso-negado', component: AcessoNegadoComponent },
+      { path: 'editar-cliente/:id', component: EditarClienteComponent },
     ])
   ],
   providers: [],

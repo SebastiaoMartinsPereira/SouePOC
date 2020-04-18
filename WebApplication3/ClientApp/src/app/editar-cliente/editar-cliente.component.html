@@ -1,0 +1,88 @@
+
+<form id="formEditar" class="text-center" (ngSubmit)="editarCadastro()" [formGroup]="edicaoForm">
+
+  <div class="alert alert-danger" *ngIf="errors.length > 0">
+
+    <h3 id="msgRetorno">Ocorreram problemas durante a solicitação!</h3>
+    <ul>
+      <li *ngFor="let error of errors">{{error.mensagem}}</li>
+    </ul>
+
+  </div>
+
+  <h4>Edição de dados Pessoais</h4>
+  <div class="form-group">
+
+    <input type="hidden" class="form-control" id="Nome" formControlName="Id" placeholder="Nome" />
+    <label class="sr-only" for="inlineFormInputName">Nome</label>
+    <input type="text" class="form-control" id="Nome" formControlName="Nome" placeholder="Nome"
+           [ngClass]="{'is-invalid':edicaoForm.get('Nome').errors && (edicaoForm.get('Nome').dirty || edicaoForm.get('Nome').touched)}" />
+    <span *ngIf="edicaoForm.get('Nome').errors && (edicaoForm.get('Nome').dirty || edicaoForm.get('Nome').touched)" class="text-danger">
+      <p *ngIf="(edicaoForm.get('Nome')?.errors?.minlength || edicaoForm.get('Nome')?.errors?.maxlength )">Deve conter entre 5 e 50 caracteres</p>
+      <p *ngIf="(edicaoForm.get('Nome')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Cpf</label>
+    <input type="text" class="form-control" id="Documento" formControlName="Documento"
+           cpf [textMask]="{mask:MASKS.cpf.textMask}"
+           placeholder="CPF"
+           [ngClass]="{'is-invalid':edicaoForm.get('Documento').errors && (edicaoForm.get('Documento').dirty || edicaoForm.get('Documento').touched)}" />
+    <span *ngIf="edicaoForm.get('Documento').errors && (edicaoForm.get('Documento').dirty || edicaoForm.get('Documento').touched)" class="text-danger">
+      <p *ngIf="(edicaoForm.get('Documento')?.errors?.cpf )">CPF digitado é inválido</p>
+      <p *ngIf="(edicaoForm.get('Documento')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputGroupUsername">E-mail</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text">@</div>
+      </div>
+      <input type="email" class="form-control" id="Email" formControlName="Email" placeholder="E-mail"
+             [ngClass]="{'is-invalid':edicaoForm.get('Email').errors && (edicaoForm.get('Email').dirty || edicaoForm.get('Email').touched)}" />
+    </div>
+    <span *ngIf="edicaoForm.get('Email').errors && (edicaoForm.get('Email').dirty || edicaoForm.get('Email').touched)" class="text-danger">
+      <p *ngIf="(edicaoForm.get('Email')?.errors?.email )">Email informado é inválido</p>
+      <p *ngIf="(edicaoForm.get('Email')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Telefone</label>
+    <input type="text" class="form-control" id="Telefone" formControlName="Telefone" placeholder="Telefone"
+           telefone [textMask]="{mask: MASKS.telefone.textMask}"
+           [ngClass]="{'is-invalid':edicaoForm.get('Telefone').errors && (edicaoForm.get('Telefone').dirty || edicaoForm.get('Telefone').touched)}" />
+    <span *ngIf="edicaoForm.get('Telefone').errors && (edicaoForm.get('Telefone').dirty || edicaoForm.get('Telefone').touched)" class="text-danger">
+      <p *ngIf="(edicaoForm.get('Telefone')?.errors?.telefone )">Telefone informado é inválido</p>
+      <p *ngIf="(edicaoForm.get('Telefone')?.errors?.required)">Preenchimento obrigatório</p>
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label class="sr-only" for="inlineFormInputName">Endereco</label>
+    <input type="text" class="form-control" id="Endereco" formControlName="Endereco" placeholder="Endereço">
+  </div>
+
+  <div class="form-group">
+    <!--<input type="button" (click)="excluir()" [disabled]="!edicaoForm.valid" class="btn w-25" value="Excluir" />-->
+    <button type="submit" [ngClass]="{'bg-danger':edicaoForm.valid}" [ngClass]="{'bg-danger':!edicaoForm.valid}" [disabled]="!edicaoForm.valid" class="btn w-25">Salvar</button>
+  </div>
+
+  <div style="display: none" class="form-group">
+    <div class="col-md-4">
+      <p>Form valido : {{edicaoForm.valid}}</p>
+      <p>Form sujo : {{edicaoForm.dirty}}</p>
+      <p>Form tocado : {{edicaoForm.touched}}</p>
+    </div>
+  </div>
+</form>
+
+<div id="editar-success" class="card alert-success sumido">
+  <div class="card-body">
+    <h5 class="card-text">Dados editados com sucesso!</h5>
+    <span>Você será redirecionado para a home em 10 segundos!</span><br /><br />
+    <input type="button" (click)="irHome()" class="btn btn-secondary" value="Ir para a home" />
+  </div>
+</div>

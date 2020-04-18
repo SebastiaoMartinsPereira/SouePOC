@@ -8,10 +8,10 @@
       <button type="submit" class="btn btn-light text-dark">Acessar</button>
     </li>
     <li *ngSwitchCase="true" class="nav-item col text-right cliente-logado text-dark" [routerLinkActive]='["link-active"]'>
-      <label>Olá,</label> &nbsp;<small>{{ nome}}</small>
+      <label>Olá,</label> &nbsp;<a  routerLink="/editar-cliente/{{cliente.id}}"    ><small>{{nome}}</small></a>
     </li>
     <li *ngSwitchCase="true">
-      <a href="javascript:void(0)" (click)="logout()" type="submit" class="text-dark"> Sair <i class="fas fa-sign-out-alt"></i></a>
+      <a (click)="logout()" type="submit" class="text-dark"> Sair <i class="fas fa-sign-out-alt"></i></a>
     </li>
   </ul>
 </form>

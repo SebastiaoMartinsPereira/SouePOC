@@ -35,7 +35,7 @@ export class MenuLoginComponent implements OnInit {
 
 
   usuarioLogado(): boolean {
-
+    
     this.token = this.localStorageUtils.obterTokenCliente();
     this.cliente = this.localStorageUtils.obterCliente();
 
